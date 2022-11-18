@@ -1,3 +1,4 @@
+import { Account } from '@modules/account/infra/typeorm/entities/Account';
 import {
   Entity,
   PrimaryColumn,
@@ -9,7 +10,6 @@ import {
   JoinColumn,
   ManyToOne,
 } from 'typeorm';
-import { Account } from './Account';
 
 @Entity('transaction')
 export class Transaction {

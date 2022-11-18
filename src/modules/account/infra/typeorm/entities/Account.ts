@@ -7,7 +7,7 @@ import {
   DeleteDateColumn,
   OneToMany,
 } from 'typeorm';
-import { Transaction } from './Transaction';
+import { Transaction } from '@modules/transactions/infra/typeorm/entities/Transaction';
 
 @Entity('account')
 export class Account {
