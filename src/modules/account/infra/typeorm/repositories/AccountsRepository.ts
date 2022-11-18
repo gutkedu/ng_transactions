@@ -3,7 +3,7 @@ import { IAccountsRepository } from '@modules/account/repositories/IAccountsRepo
 import { getRepository, Repository } from 'typeorm';
 import { Account } from '../entities/Account';
 
-class AccountRepository implements IAccountsRepository {
+export class AccountRepository implements IAccountsRepository {
   private repository: Repository<Account>;
 
   constructor() {
@@ -11,7 +11,9 @@ class AccountRepository implements IAccountsRepository {
   }
 
   async create(account: ICreateAccountDTO): Promise<Account> {
-    return this.repository.save(account);
+    const newAccount = this.repository.create(account);
+    await this.repository.save(newAccount);
+    return newAccount;
   }
 
   async findById(accountId: string): Promise<Account> {

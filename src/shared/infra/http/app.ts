@@ -7,6 +7,7 @@ import '@shared/container';
 
 import { AppError } from '@shared/errors/AppError';
 import { router } from './routes';
+import { ValidateError } from '@shared/errors/ValidateError';
 
 createConnection();
 
@@ -21,6 +22,10 @@ app.use(
     if (err instanceof AppError) {
       return response.status(err.statusCode).json({
         message: err.message,
+      });
+    } else if (err instanceof ValidateError) {
+      return response.status(err.statusCode).json({
+        errors: err.validation.array({ onlyFirstError: true }),
       });
     }
 

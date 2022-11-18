@@ -3,7 +3,7 @@ import { IUsersRepository } from '@modules/account/repositories/IUsersRepository
 import { getRepository, Repository } from 'typeorm';
 import { User } from '../entities/User';
 
-class UsersRepository implements IUsersRepository {
+export class UsersRepository implements IUsersRepository {
   private repository: Repository<User>;
 
   constructor() {
@@ -11,7 +11,8 @@ class UsersRepository implements IUsersRepository {
   }
 
   async create(user: ICreateUserDTO): Promise<User> {
-    return this.repository.save(user);
+    const newUser = this.repository.create(user);
+    return this.repository.save(newUser);
   }
 
   async findByUsername(username: string): Promise<User> {

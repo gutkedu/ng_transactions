@@ -6,12 +6,13 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   OneToMany,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Transaction } from '@modules/transactions/infra/typeorm/entities/Transaction';
 
 @Entity('account')
 export class Account {
-  @PrimaryColumn('uuid')
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ type: 'numeric' })

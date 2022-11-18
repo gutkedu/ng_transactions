@@ -7,11 +7,12 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   ManyToOne,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 @Entity('transaction')
 export class Transaction {
-  @PrimaryColumn('uuid')
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ type: 'numeric' })
