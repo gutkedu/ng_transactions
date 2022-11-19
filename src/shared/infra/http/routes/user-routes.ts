@@ -1,5 +1,6 @@
 import { CheckBalanceController } from '@modules/account/useCases/checkBalance/checkBalanceController';
 import { CreateUserController } from '@modules/account/useCases/createUser/createUserController';
+import { UserTransactionsController } from '@modules/account/useCases/userTransactions/userTransactionsController';
 import { CreateUserInput } from '@modules/account/validations/userValidations';
 import { Router } from 'express';
 import { checkSchema } from 'express-validator';
@@ -10,6 +11,7 @@ export const userRoutes = Router();
 
 const createUserController = new CreateUserController();
 const checkBalanceController = new CheckBalanceController();
+const userTransactionsController = new UserTransactionsController();
 
 userRoutes.post(
   '/',
@@ -19,3 +21,9 @@ userRoutes.post(
 );
 
 userRoutes.get('/balance', authenticate, checkBalanceController.handle);
+
+userRoutes.get(
+  '/transactions',
+  authenticate,
+  userTransactionsController.handle,
+);

@@ -3,4 +3,5 @@ import { Transaction } from '../infra/typeorm/entities/Transaction';
 
 export interface ITransactionsRepository {
   create(transaction: ICreateTransactionDTO): Promise<Transaction>;
+  findByAccountId(accountId: string): Promise<Transaction[]>;
 }

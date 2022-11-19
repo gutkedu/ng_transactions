@@ -1,7 +1,6 @@
 import { Account } from '@modules/account/infra/typeorm/entities/Account';
 import {
   Entity,
-  PrimaryColumn,
   Column,
   CreateDateColumn,
   UpdateDateColumn,
