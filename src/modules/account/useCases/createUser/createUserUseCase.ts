@@ -23,8 +23,6 @@ export class CreateUserUseCase {
 
     const userAccount = await this.accountsRepository.create({ balance: 100 });
 
-    console.log(userAccount);
-
     const newUser = await this.usersRepository.create({
       username: user.username,
       password: passwordHash,
