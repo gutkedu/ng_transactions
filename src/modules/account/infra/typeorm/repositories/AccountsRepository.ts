@@ -19,4 +19,8 @@ export class AccountRepository implements IAccountsRepository {
   async findById(accountId: string): Promise<Account> {
     return this.repository.findOne(accountId);
   }
+
+  async updateBalance(accountId: string, balance: number): Promise<void> {
+    await this.repository.update(accountId, { balance });
+  }
 }

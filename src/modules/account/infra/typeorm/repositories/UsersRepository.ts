@@ -16,17 +16,13 @@ export class UsersRepository implements IUsersRepository {
   }
 
   async findByUsername(username: string): Promise<User> {
-    return this.repository.findOne({ where: { username } });
-  }
-
-  async findById(userId: string): Promise<User> {
-    return this.repository.findOne(userId);
-  }
-
-  async findUserAccount(username: string): Promise<User> {
     return this.repository.findOne({
       where: { username },
       relations: ['account'],
     });
+  }
+
+  async findById(userId: string): Promise<User> {
+    return this.repository.findOne(userId, { relations: ['account'] });
   }
 }

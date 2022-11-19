@@ -18,9 +18,6 @@ export class Transaction {
   @Column({ type: 'numeric' })
   value: number;
 
-  @Column({ select: false, type: 'varchar' })
-  password: string;
-
   @Column({ type: 'uuid' })
   debitedAccountId: string;
 

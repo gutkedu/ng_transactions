@@ -19,11 +19,6 @@ export class CheckBalanceUseCase {
   async execute(userId: string): Promise<IResponse> {
     const userExist = await this.usersRepository.findById(userId);
     if (!userExist) throw new AppError('invalid-user');
-
-    const userAccount = await this.usersRepository.findUserAccount(
-      userExist.username,
-    );
-
-    return { accountBalance: userAccount.account.balance };
+    return { accountBalance: userExist.account.balance };
   }
 }
