@@ -21,6 +21,9 @@ $ yarn install
 #No docker, utilizar o comando
 $ docker compose up -d
 
+# Inicializar o banco de dados
+$ yarn run typeorm migration:run
+
 #O banco de dados postgres inicializara na porta 5432.
 # O servidor inciará na porta:3333 - acesse <http://localhost:3333>
 ```
