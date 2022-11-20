@@ -1,6 +1,10 @@
 import { ICreateAccountDTO } from '@modules/account/dtos/ICreateAccountDTO';
 import { IAccountsRepository } from '@modules/account/repositories/IAccountsRepository';
-import { getRepository, Repository } from 'typeorm';
+
+import {
+  getRepository,
+  Repository,
+} from 'typeorm';
 import { Account } from '../entities/Account';
 
 export class AccountRepository implements IAccountsRepository {
@@ -26,7 +30,9 @@ export class AccountRepository implements IAccountsRepository {
 
   async getUserTransactions(accountId: string): Promise<Account> {
     return this.repository.findOne({
-      where: { id: accountId },
+      where: {
+        id: accountId,
+      },
       relations: ['debitedTransactions', 'creditedTransactions'],
     });
   }

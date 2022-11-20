@@ -28,7 +28,6 @@ export class AuthUserUseCase {
     const { expires_in_token, secret_token } = auth;
 
     const user = await this.userRepository.findByUsername(username);
-    console.log(user);
     if (!user) throw new AppError('incorrect email or password');
 
     const passwordMatch = await compare(password, user.password);

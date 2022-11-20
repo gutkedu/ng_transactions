@@ -2,14 +2,18 @@ import { inject, injectable } from 'tsyringe';
 import { IUsersRepository } from '@modules/account/repositories/IUsersRepository';
 import { IAccountsRepository } from '@modules/account/repositories/IAccountsRepository';
 import { Transaction } from '@modules/transactions/infra/typeorm/entities/Transaction';
+import { IUserTransactionsSearchParameters } from '@modules/account/dtos/IUserTransactionsSearchParameter';
+import { ITransactionsRepository } from '@modules/transactions/repositories/ITransactionsRepository';
+import { AppError } from '@shared/errors/AppError';
 
 interface IRequest {
   userId: string;
+  searchParameter?: IUserTransactionsSearchParameters;
 }
 
 interface IResponse {
-  debitedTransactions: Transaction[];
-  creditedTransactions: Transaction[];
+  userCashOutTransactions?: Transaction[];
+  userCashInTransactions?: Transaction[];
 }
 
 @injectable()
@@ -19,18 +23,48 @@ export class UserTransactionsUseCase {
     private usersRepository: IUsersRepository,
     @inject('AccountsRepository')
     private accountRepository: IAccountsRepository,
+    @inject('TransactionsRepository')
+    private transactionRepository: ITransactionsRepository,
   ) {}
 
-  async execute({ userId }: IRequest): Promise<IResponse> {
+  async execute({ userId, searchParameter }: IRequest): Promise<any> {
     const user = await this.usersRepository.findById(userId);
+    if (!user) throw new AppError('user-dont-exist');
 
-    const userTransactions = await this.accountRepository.getUserTransactions(
-      user.accountId,
-    );
-
-    return {
-      debitedTransactions: userTransactions.debitedTransactions,
-      creditedTransactions: userTransactions.creditedTransactions,
-    } as IResponse;
+    if (searchParameter.isCashIn) {
+      const userCashInTransactions =
+        await this.transactionRepository.findCashIn(
+          user.accountId,
+          searchParameter,
+        );
+      return {
+        userCashInTransactions,
+      } as IResponse;
+    } else if (searchParameter.isCashOut) {
+      const userCashOutTransactions =
+        await this.transactionRepository.findCashOut(
+          user.accountId,
+          searchParameter,
+        );
+      return {
+        userCashOutTransactions,
+      } as IResponse;
+    } else {
+      const [userCashInTransactions, userCashOutTransactions] =
+        await Promise.all([
+          this.transactionRepository.findCashIn(
+            user.accountId,
+            searchParameter,
+          ),
+          this.transactionRepository.findCashOut(
+            user.accountId,
+            searchParameter,
+          ),
+        ]);
+      return {
+        userCashInTransactions,
+        userCashOutTransactions,
+      } as IResponse;
+    }
   }
 }

@@ -2,7 +2,6 @@ import { inject, injectable } from 'tsyringe';
 import { IUsersRepository } from '@modules/account/repositories/IUsersRepository';
 import { ITransactionsRepository } from '@modules/transactions/repositories/ITransactionsRepository';
 import { AppError } from '@shared/errors/AppError';
-import { Transaction } from '@modules/transactions/infra/typeorm/entities/Transaction';
 import { IAccountsRepository } from '@modules/account/repositories/IAccountsRepository';
 
 interface IRequest {
@@ -38,8 +37,8 @@ export class CashOutUseCase {
       throw new AppError('cannot-transfer-for-the-same-user');
     }
 
-    if (cashOutValue > cashInUserExist.account.balance) {
-      throw new AppError('insufficient-cashIn-balance');
+    if (cashOutValue > cashOutUser.account.balance) {
+      throw new AppError('insufficient-balance');
     }
 
     await Promise.all([
@@ -49,8 +48,12 @@ export class CashOutUseCase {
         creditedAccountId: cashInUserExist.accountId,
       }),
       this.accountRepository.updateBalance(
-        cashInUserExist.accountId,
+        cashOutUser.accountId,
         cashInUserExist.account.balance - cashOutValue,
+      ),
+      this.accountRepository.updateBalance(
+        cashInUserExist.accountId,
+        cashInUserExist.account.balance + cashOutValue,
       ),
     ]);
   }
