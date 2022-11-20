@@ -3,20 +3,20 @@ version: "3.9"
 services:
   database:
     image: postgres
-    container_name: database_pg_transactions
+    container_name: database_ng_transactions
     restart: always
     ports:
       - 5432:5432
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=pg_transactions
+      - POSTGRES_DB=ng_transactions
     volumes:
       - pgdata:/data/postgres
 
   app:
     build: .
-    container_name: pg_transactions
+    container_name: ng_transactions
     restart: always
     ports:
       - 3333:3333
