@@ -1,12 +1,10 @@
-import { ICreateUserDTO } from '@modules/account/dtos/ICreateUserDTO';
-import { User } from '@modules/account/infra/typeorm/entities/User';
 import { inject, injectable } from 'tsyringe';
-import { IAccountsRepository } from '@modules/account/repositories/IAccountsRepository';
 import { IUsersRepository } from '@modules/account/repositories/IUsersRepository';
 import { AppError } from '@shared/errors/AppError';
+import { Account } from '@modules/account/infra/typeorm/entities/Account';
 
 interface IResponse {
-  accountBalance: number;
+  userAccount: Account;
 }
 
 @injectable()
@@ -19,6 +17,6 @@ export class CheckBalanceUseCase {
   async execute(userId: string): Promise<IResponse> {
     const userExist = await this.usersRepository.findById(userId);
     if (!userExist) throw new AppError('invalid-user');
-    return { accountBalance: userExist.account.balance };
+    return { userAccount: userExist.account };
   }
 }
