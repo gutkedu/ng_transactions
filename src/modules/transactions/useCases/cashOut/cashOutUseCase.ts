@@ -49,11 +49,11 @@ export class CashOutUseCase {
       }),
       this.accountRepository.updateBalance(
         cashOutUser.accountId,
-        cashInUserExist.account.balance - cashOutValue,
+        Number(cashOutUser.account.balance) - Number(cashOutValue),
       ),
       this.accountRepository.updateBalance(
         cashInUserExist.accountId,
-        cashInUserExist.account.balance + cashOutValue,
+        Number(cashInUserExist.account.balance) + Number(cashOutValue),
       ),
     ]);
   }
