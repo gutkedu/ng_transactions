@@ -22,3 +22,24 @@ export const CreateUserInput: Schema = {
     errorMessage: 'invalid-password-format',
   },
 };
+
+export const GetUserTransactionsInput: Schema = {
+  transactionDate: {
+    in: 'query',
+    isDate: true,
+    errorMessage: 'invalid-transactionDate-format',
+    optional: true,
+  },
+  isCashIn: {
+    in: 'query',
+    isBoolean: true,
+    errorMessage: 'invalid-isCashIn-format',
+    optional: true,
+  },
+  isCashOut: {
+    in: 'query',
+    isBoolean: true,
+    errorMessage: 'invalid-isCashOut-format',
+    optional: true,
+  },
+};

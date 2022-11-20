@@ -1,7 +1,10 @@
 import { CheckBalanceController } from '@modules/account/useCases/checkBalance/checkBalanceController';
 import { CreateUserController } from '@modules/account/useCases/createUser/createUserController';
 import { UserTransactionsController } from '@modules/account/useCases/userTransactions/userTransactionsController';
-import { CreateUserInput } from '@modules/account/validations/userValidations';
+import {
+  CreateUserInput,
+  GetUserTransactionsInput,
+} from '@modules/account/validations/userValidations';
 import { Router } from 'express';
 import { checkSchema } from 'express-validator';
 import { authenticate } from '../middlewares/authenticate';
@@ -24,6 +27,8 @@ userRoutes.get('/balance', authenticate, checkBalanceController.handle);
 
 userRoutes.get(
   '/transactions',
+  checkSchema(GetUserTransactionsInput),
+  schemaValidate(),
   authenticate,
   userTransactionsController.handle,
 );
